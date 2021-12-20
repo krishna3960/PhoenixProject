@@ -29,21 +29,7 @@ channel.join()
 
 };
 
-const createRoomChannel= (chatId) => {
-  let channel = socket.channel(`rooms:${chatId}`, {});
-  channel.join()
-  .receive("ok", resp => {
-    console.log(resp)
-  })
-  .receive("error", resp => {
-    console.log("error" + resp)
-  });
-  channel.on(`rooms:${roomId}:new`, renderComment)
-  document.querySelector('button').addEventListener('click', () => {
-    const content = document.querySelector('textarea').value ;
-    channel.push('comment:add', {content: content});
-  });
-};
+
  
 function renderComments(comments) {
   const renderedComments = comments.map(comment => {
