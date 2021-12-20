@@ -1,0 +1,49 @@
+defmodule DiscussWeb.Channels.CommentsChannel do
+  use DiscussWeb, :channel
+  alias Discuss.Discussions.TopicContext
+  alias Discuss.Discussions.Comment
+  alias Discuss.Repo
+  import Ecto
+
+  @impl true
+  def join("comments:" <> topic_context_id, _params, socket) do
+    topic_id = String.to_integer(topic_context_id)
+
+   topic = TopicContext
+    |> Repo.get(topic_id)
+    |> Repo.preload(comments: [:user])
+
+
+
+    {:ok, %{comments: topic.comments}, assign(socket, :topic, topic)}
+
+  end
+
+
+
+
+  def handle_in(name, %{"content" => content}, socket) do
+    topic = socket.assigns.topic
+    user_id = socket.assigns.user_id
+    changeset = topic
+    |> build_assoc(:comments, user_id: user_id)
+    |> Comment.changeset(%{content: content})
+
+    case Repo.insert(changeset) do
+      {:ok, comment} ->
+        IO.inspect(socket.assigns)
+        broadcast!(socket, "comments:#{socket.assigns.topic_context.id}:new",
+          %{comment: comment})
+        {:reply, :ok, socket}
+
+      {:error, _reason} ->
+        {:reply, {:error, %{errors: changeset}}, socket}
+
+    end
+  end
+
+
+  defp authorized?(_payload) do
+    true
+  end
+end

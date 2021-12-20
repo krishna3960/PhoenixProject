@@ -1,0 +1,34 @@
+<h1>Listing Topics</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for topic_context <- @topics do %>
+    <tr>
+      <td><%= topic_context.title %></td>
+      <td> <%= link "Show", to: Routes.topic_context_path(@conn, :show, topic_context) %> </td>
+      <%= if @conn.assigns.user do %>
+        <%= if @conn.assigns.user.id == topic_context.user_id do %>
+        
+        <td><%= link "Edit", to: Routes.topic_context_path(@conn, :edit, topic_context)%> </td>
+        <td><%= link "Delete", to: Routes.topic_context_path(@conn, :delete, topic_context) , method: :delete, data: [confirm: "Are you sure?"]%> </td>
+        
+        
+        <% end %>
+      <% end %>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<div class = "fixed-action-btn"> 
+<%= link to: Routes.topic_context_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %> 
+<i class="material-icons"> add</i>
+<% end %>
+</div>
