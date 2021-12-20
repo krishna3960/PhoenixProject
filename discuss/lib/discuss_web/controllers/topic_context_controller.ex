@@ -59,7 +59,7 @@ defmodule DiscussWeb.TopicContextController do
   def delete(conn, %{"id" => id}) do
     topic_context = Discussions.get_topic_context!(id)
     {:ok, _topic_context} = Discussions.delete_topic_context(topic_context)
-
+    IO.puts("TOPIC DELETED")
     conn
     |> put_flash(:info, "Topic deleted successfully.")
     |> redirect(to: Routes.topic_context_path(conn, :index))
