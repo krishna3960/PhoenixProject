@@ -2,6 +2,31 @@
 @import "./phoenix.css";
 
 /* Alerts and form errors used by phx.new */
+#chat-container {
+  display: flex;
+  padding: 1em; 
+  justify-content: space-between;
+  height: 500px;
+}
+
+#chat-messages {
+  flex-grow: 1;
+  margin: -1em 1em 1em -1em;
+  border: 1px solid black;
+  padding: 1em;
+}
+
+#chat-messages p {
+  padding: 0;
+  margin: 0;
+}
+
+#user_list  p{
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+
+}
 .alert {
   padding: 15px;
   margin-bottom: 20px;
